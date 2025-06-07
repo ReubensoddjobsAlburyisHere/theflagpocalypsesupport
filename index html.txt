@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE FLAGPOCALYPSE Support Form</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background-image: url('https://i.imgur.com/oPyfp2H.png'); /* The background image */
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-position: center center; /* Center the image */
+            background-attachment: fixed; /* Keep the background fixed when scrolling */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        /* Custom styles for the form container to blend with the background */
+        .form-container {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(5px); /* For Safari support */
+            border-radius: 0.5rem; /* Tailwind's rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Tailwind's shadow-xl */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="form-container p-8 w-full max-w-md mx-auto">
+        <h1 class="text-3xl font-bold text-center text-white mb-6">THE FLAGPOCALYPSE Support 👽</h1>
+
+        <form>
+            <!-- Category Dropdown -->
+            <div class="mb-5">
+                <label for="category" class="block text-white text-sm font-semibold mb-2">Category</label>
+                <select id="category" class="w-full px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out bg-gray-700 text-white">
+                    <option value="">Select a Category</option>
+                    <option value="technical">Technical Issues (Streaming/Playback) 📺</option>
+                    <option value="billing">Billing & Payments 💸</option>
+                    <option value="content">Content Feedback (Show-Related) ✍️</option>
+                    <option value="merchandise">Merchandise & Store 🛍️</option>
+                    <option value="fan-community">Fan & Community 🤝</option>
+                    <option value="media-press">Media & Press Inquiries 📰</option>
+                    <option value="accessibility">Accessibility & Inclusivity 🧑‍🦽</option>
+                    <option value="general">General Inquiry ❓</option>
+                </select>
+            </div>
+
+            <!-- Subcategory Dropdown -->
+            <div class="mb-6">
+                <label for="subcategory" class="block text-white text-sm font-semibold mb-2">Subcategory</label>
+                <select id="subcategory" class="w-full px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out bg-gray-700 text-white" disabled>
+                    <option value="">Select a Subcategory</option>
+                </select>
+            </div>
+
+            <!-- Description Textarea -->
+            <div class="mb-6">
+                <label for="description" class="block text-white text-sm font-semibold mb-2">Description</label>
+                <textarea id="description" rows="5" class="w-full px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y transition duration-200 ease-in-out bg-gray-700 text-white" placeholder="Please describe your issue or feedback in detail..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200 ease-in-out shadow-md">
+                Submit Support Request
+            </button>
+        </form>
+
+        <!-- Custom Message Box for alerts (instead of alert()) -->
+        <div id="messageBox" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center p-4">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+                <p id="messageText" class="text-gray-800 text-lg mb-4"></p>
+                <button id="closeMessageBox" class="bg-blue-600 text-white font-bold py-2 px-5 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get references to the dropdowns
+        const categoryDropdown = document.getElementById('category');
+        const subcategoryDropdown = document.getElementById('subcategory');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const closeMessageBox = document.getElementById('closeMessageBox');
+        const form = document.querySelector('form');
+
+        // Define subcategories based on categories for a TV show context
+        const subcategories = {
+            technical: [
+                'Streaming Problems',
+                'Audio/Video Sync Issues',
+                'Buffering/Lag',
+                'Subtitle/Closed Captioning Issues',
+                'Platform Compatibility',
+                'Broken Links/Content'
+            ],
+            billing: [
+                'Payment Error',
+                'Refund Request',
+                'Purchase History',
+                'Fraudulent Activity',
+                'Invoice/Receipt Request'
+            ],
+            content: [
+                'Episode-Specific Feedback',
+                'Plot/Storyline Feedback',
+                'Character Feedback',
+                'Suggestions for Future Seasons',
+                'Reporting Inaccuracies/Errors',
+                'Missing Episodes/Content'
+            ],
+            merchandise: [
+                'Order Status Inquiry',
+                'Product Defect/Damage',
+                'Shipping Issues',
+                'Return/Exchange Request',
+                'Merchandise Suggestions'
+            ],
+            'fan-community': [
+                'Fan Art Submission',
+                'Community Guidelines Inquiry',
+                'Event Suggestions',
+                'Collaboration Ideas'
+            ],
+            'media-press': [
+                'Interview Request',
+                'Press Kit Request',
+                'Licensing Inquiries',
+                'Partnership Opportunities'
+            ],
+            accessibility: [
+                'Accessibility Feature Request',
+                'Reporting Accessibility Issue',
+                'Translation/Dubbing Feedback',
+                'Language Support'
+            ],
+            general: [
+                'General Question',
+                'Website Feedback',
+                'Report Misconduct',
+                'Other'
+            ]
+        };
+
+        /**
+         * Displays a custom message box instead of using alert().
+         * @param {string} message - The message to display.
+         */
+        function showMessageBox(message) {
+            messageText.textContent = message;
+            messageBox.classList.remove('hidden');
+            messageBox.classList.add('flex');
+        }
+
+        // Event listener for category dropdown change
+        categoryDropdown.addEventListener('change', () => {
+            const selectedCategory = categoryDropdown.value;
+            // Clear existing options in subcategory dropdown
+            subcategoryDropdown.innerHTML = '<option value="">Select a Subcategory</option>';
+
+            // If a category is selected, enable and populate the subcategory dropdown
+            if (selectedCategory) {
+                const options = subcategories[selectedCategory];
+                if (options) {
+                    options.forEach(optionText => {
+                        const option = document.createElement('option');
+                        option.value = optionText.toLowerCase().replace(/\s/g, '-'); // Create a slug-like value
+                        option.textContent = optionText;
+                        subcategoryDropdown.appendChild(option);
+                    });
+                }
+                subcategoryDropdown.disabled = false; // Enable the subcategory dropdown
+            } else {
+                // If no category is selected, disable the subcategory dropdown
+                subcategoryDropdown.disabled = true;
+            }
+        });
+
+        // Event listener for closing the custom message box
+        closeMessageBox.addEventListener('click', () => {
+            messageBox.classList.add('hidden');
+            messageBox.classList.remove('flex');
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const category = categoryDropdown.value;
+            const subcategory = subcategoryDropdown.value;
+            const description = document.getElementById('description').value.trim();
+
+            if (!category) {
+                showMessageBox('Please select a category.');
+                return;
+            }
+            if (!subcategory && subcategoryDropdown.disabled === false) { // Check if subcategory is enabled and not selected
+                 showMessageBox('Please select a subcategory.');
+                 return;
+             }
+            if (!description) {
+                showMessageBox('Please provide a description for your issue.');
+                return;
+            }
+
+            // Simulate form submission (in a real app, you'd send this data to a server)
+            console.log('Support Request Submitted:');
+            console.log('Category:', category);
+            console.log('Subcategory:', subcategory);
+            console.log('Description:', description);
+
+            showMessageBox('Your support request has been submitted successfully!');
+
+            // Optionally, reset the form after successful submission
+            form.reset();
+            subcategoryDropdown.innerHTML = '<option value="">Select a Subcategory</option>';
+            subcategoryDropdown.disabled = true;
+        });
+    </script>
+</body>
+</html>
